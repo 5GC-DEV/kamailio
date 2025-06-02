@@ -1058,14 +1058,30 @@ int ims_authenticate(struct sip_msg *msg, str *prealm, int is_proxy_auth)
 			goto cleanup;
 		}
 	}
-
+	char auth_hex[1024];
 	switch(av->type) {
 		case AUTH_AKAV1_MD5:
 		case AUTH_AKAV2_MD5:
 		case AUTH_MD5:
+			/* Modified by C-DAC*/
+			if(av->authorization.len * 2 + 1 > sizeof(auth_hex)) {
+				LM_ERR("authorization value too long to print in hex\n");
+				ret = AUTH_ERROR;
+				goto cleanup;
+			}
+			for(int i = 0; i < av->authorization.len; i++) {
+				snprintf(&auth_hex[2 * i], 3, "%02X",
+						(unsigned char)av->authorization.s[i]);
+			}
+			auth_hex[2 * av->authorization.len] = '\0';
+
+			LM_INFO("Username: %.*s and realm %.*s authorization (hex): %s\n",
+					username.len, username.s, realm.len, realm.s, auth_hex);
+
 			LM_INFO("Username: %.*s and realm %.*s authorization %.*s\n",
 					username.len, username.s, realm.len, realm.s,
-					av->authorization.len,av->authorization.s);
+					av->authorization.len, av->authorization.s);
+			/*Modification End */
 			calc_HA1(HA_MD5, &username /*&private_identity*/, &realm,
 					&(av->authorization), &(av->authenticate), &cnonce, ha1);
 			calc_response(ha1, &(av->authenticate), &nc, &cnonce, &qop_str,

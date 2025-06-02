@@ -1063,7 +1063,7 @@ int ims_authenticate(struct sip_msg *msg, str *prealm, int is_proxy_auth)
 		case AUTH_AKAV1_MD5:
 		case AUTH_AKAV2_MD5:
 		case AUTH_MD5:
-			LM_INFO("Username: %.*s and realm %.*s authorization %.*s (%.*s)\n",
+			LM_INFO("Username: %.*s and realm %.*s authorization %.*s\n",
 					username.len, username.s, realm.len, realm.s,
 					av->authorization.len,av->authorization.s);
 			calc_HA1(HA_MD5, &username /*&private_identity*/, &realm,

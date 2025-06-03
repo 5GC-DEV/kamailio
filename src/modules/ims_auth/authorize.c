@@ -1104,7 +1104,7 @@ int ims_authenticate(struct sip_msg *msg, str *prealm, int is_proxy_auth)
 					response16.len, response16.s, 32, expected, 32, ha1,
 					msg->first_line.u.request.method.len,
 					msg->first_line.u.request.method.s);
-			strncpy(response16.s,expected,response16.len);
+			// strncpy(response16.s,expected,response16.len);
 			break;
 		default:
 			LM_ERR("algorithm %.*s is not handled.\n",

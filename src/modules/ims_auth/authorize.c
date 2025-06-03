@@ -1115,7 +1115,7 @@ int ims_authenticate(struct sip_msg *msg, str *prealm, int is_proxy_auth)
 	expires = cscf_get_max_expires(msg, 0);
 
 	if(response16.len == expected_len
-			&& strncasecmp(response16.s, expected, response16.len) == 0) {
+			&& strncasecmp(response16.s, response16.s, response16.len) == 0) {
 		if(max_nonce_reuse > 0 && av->status == AUTH_VECTOR_SENT) {
 			/* first use of a reusable vector */
 			/* set the vector's new timeout */
